@@ -99,40 +99,38 @@ export async function eliminarReserva(id: number) {
 	}
 }
 
-// --- Ejercicio Complementario 2: Cancelación de reservas ---
+// Cancelación de reservas
 // Cambia el estado de una reserva a "cancelada" en lugar de eliminarla.
 export async function cancelarReserva(id: number) {
 	try {
-		// 1. Ejecutamos el update en la base de datos buscando por ID.
+		// 1. Ejecuta el update en la base de datos buscando por ID.
 		await prisma.reserva.update({
 			where: { id },
 			data: { estado: "cancelada" },
 		});
 
-		// 2. Invalidamos la caché para que el listado muestre el cambio al instante.
+		// 2. Invalida caché para que el listado muestre el cambio al instante.
 		revalidatePath("/reservas");
 		return { exito: true };
 	} catch (error) {
-		// 3. Retornamos un mensaje de error legible si ocurre algún fallo.
 		return { exito: false, mensaje: "No se pudo cancelar la reserva." };
 	}
 }
 
-// --- Ejercicio Complementario 4: Confirmación de reservas ---
+// Confirmación de reservas
 // Cambia el estado de una reserva a "confirmada".
 export async function confirmarReserva(id: number) {
 	try {
-		// 1. Ejecutamos el update en la base de datos buscando por ID.
+		// 1. Ejecuta el update en la base de datos buscando por ID.
 		await prisma.reserva.update({
 			where: { id },
 			data: { estado: "confirmada" },
 		});
 
-		// 2. Invalidamos la caché para que el listado muestre el cambio al instante.
+		// 2. Invalida la caché
 		revalidatePath("/reservas");
 		return { exito: true };
 	} catch (error) {
-		// 3. Retornamos un mensaje de error legible si ocurre algún fallo.
 		return { exito: false, mensaje: "No se pudo confirmar la reserva." };
 	}
 }

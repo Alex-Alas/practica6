@@ -16,10 +16,10 @@ export default async function PaginaReservas({
 }: {
   searchParams: Promise<{ estado?: string }>;
 }) {
-  // 1. Obtenemos el parámetro 'estado' de la URL (async en Next.js 15+).
+  // 1. Obtiene el parámetro 'estado' de la URL (async en Next.js 15+).
   const { estado } = await searchParams;
 
-  // 2. Ejecutamos la consulta a Prisma aplicando un filtro 'where' si existe un estado.
+  // 2. Ejecuta la consulta a Prisma aplicando un filtro 'where' si existe un estado.
   const reservas = await prisma.reserva.findMany({
     where: estado ? { estado } : {},
     orderBy: { fecha: "asc" },
