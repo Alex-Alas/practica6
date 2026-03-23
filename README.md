@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistema de Reservaciones - Práctica 6
 
-## Getting Started
+- **[`prisma/schema.prisma`](./prisma/schema.prisma)**
+  Define la estructura de la base de datos. Aquí se encuentran los modelos principales, como `Reservation`, que incluye los campos necesarios para manejar el estado de la cita (pendiente, confirmada, cancelada) y los horarios.
 
-First, run the development server:
+- **[`app/actions/reservas.ts`](./app/actions/reservas.ts)**
+  Contiene toda la lógica del lado del servidor (Server Actions) para las reservaciones. Aquí se implementa:
+  - **Validación de disponibilidad:** Antes de crear una reservación, se verifica en la base de datos que el horario esté libre.
+  - **Cancelación y Confirmación:** Funciones que actualizan el atributo `status` de una reservación específica de manera segura.
+
+- **[`app/reservas/page.tsx`](./app/reservas/page.tsx)**
+  Es la página principal del panel de reservaciones. Se encarga de:
+  - Leer los parámetros de búsqueda de la URL y consultar a la base de datos a través de Prisma.
+  - Generar la interfaz donde se implementan los **Filtros de Búsqueda** (mostrando visualmente solo las citas que cumplen el criterio seleccionado).
+  - Renderizar el listado y mostrar los botones de acción dependiendo del estado de la cita.
+
+- **[`app/reservas/boton-cancelar.tsx`](./app/reservas/boton-cancelar.tsx) / [`boton-confirmar.tsx`](./app/reservas/boton-confirmar.tsx)**
+  Componentes de interfaz de usuario (UI) específicos para interactuar con las citas. Al hacer clic, se comunican directamente con los Server Actions correspondientes (`reservas.ts`) para cambiar el estado de la reservación visual y lógicamente.
+
+## Cómo iniciar el proyecto
+
+Para correr este proyecto localmente, sólo se necesita escribir este comando en la terminal:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Nota:** Asegúrate de que las variables de entorno (como `DATABASE_URL` para Prisma) estén configuradas en un archivo `.env` en la raíz del proyecto.
